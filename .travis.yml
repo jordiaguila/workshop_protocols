@@ -2,6 +2,7 @@ language: objective-c
 osx_image: xcode8.1
 before_install:
   - gem install slather --no-ri --no-rdoc
+  openssl aes-256-cbc -K $encrypted_52e2892d3482_key -iv $encrypted_52e2892d3482_iv -in id_rsa.enc -out id_rsa -d
 script:
   - xcodebuild clean test -project ./workshop_protocols.xcodeproj -scheme workshop_protocols -destination 'platform=iOS Simulator,name=iPhone 7' TEST_AFTER_BUILD=YES -configuration Debug -enableCodeCoverage=YES
   - slather
