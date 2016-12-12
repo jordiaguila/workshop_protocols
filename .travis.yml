@@ -1,4 +1,8 @@
 language: objective-c
 osx_image: xcode8.1
+before_install:
+  - gem install slather --no-ri --no-rdoc
 script:
   - xcodebuild clean test -project ./workshop_protocols.xcodeproj -scheme workshop_protocols -destination 'platform=iOS Simulator,name=iPhone 7' TEST_AFTER_BUILD=YES -configuration Debug -enableCodeCoverage=YES
+  - slather
+  
