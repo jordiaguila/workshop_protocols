@@ -1,0 +1,4 @@
+input_format: profdata
+coverage_service: coveralls
+xcodeproj: ./workshop_protocols.xcodeproj
+scheme: workshop_protocols
