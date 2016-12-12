@@ -2,12 +2,16 @@ language: objective-c
 osx_image: xcode8.1
 env:
   global:
+    - secure: "r4u4+qZHIa58ALcHvTVMKrFLoWht+B95eJMoWe9zrjNsyHEbQTCpir3xb4oRhnccMPJ4bWdcw/CtjYGolWaEBRPAkvfk/v3Tum7IR2+0Y4FlfDOGFBHvDYcf5YzWBCVe+FBHXg03CVNrRumLc9QwbHYXoHO8uojiY4ZJs6m+28s4ZxD9IxKuB3c3l/GZ24vx1MhpDbhLUKQ0QwX7MVTd8OZkFlKeZ1lDvjlsQSPusLPGEAHamk7pu8oStphI+4tzpxbGDPmlrfB5uBkqwg+fDYT+bK7nVTOeCnSOsqxJP+tCDJ8VZhNdfGf2aIBU09nadoVwWM1H6uLds5YVc9EkTmC2TY66PqIIPu9TIUzob/B5juoZA93ncdQd0e5x8WDJNST7RrxkRiJNPDDpvhLMnfV2R1UU8XooYCPvrV9ff+4zaGeHsLdGg5xVzEetesR4yLitqqOAa3Fr6AZ5Sa/l43C4PvM8TKYi22bl64+u0jGLXk5LBHmyLvw6kt/pMSoWwFHt95v+97cQkVrmoWT+EAta5bl5ofkZDI9YudmAdbF6P5buLt2aBP/6Z4/mfqc6UovokwVykwnQI7mrymymwl+yXXvZrwWngq6F63QAEhNim2lwaBSi9+XDn5TZoknXaEUYc+tB4L9HJnc6Yh4YGM1qCJZuN/yXN2ZKd4gwHOs="
     - ENCRYPTION_LABEL: "52e2892d3482"
     - COMMIT_AUTHOR_EMAIL: "jordi.aguila@gmail.com"
 before_install:
   - gem install slather --no-ri --no-rdoc
+  - gem install jazzy --no-ri --no-rdoc
+  - gem install xcpretty --no-ri --no-rdoc
 script:
-  - xcodebuild clean test -project ./workshop_protocols.xcodeproj -scheme workshop_protocols -destination 'platform=iOS Simulator,name=iPhone 7' TEST_AFTER_BUILD=YES -configuration Debug -enableCodeCoverage=YES
-  - slather
+  - set -o pipefail && xcodebuild clean test -project ./workshop_protocols.xcodeproj -scheme workshop_protocols -destination 'platform=iOS Simulator,name=iPhone 7' TEST_AFTER_BUILD=YES -configuration Debug -enableCodeCoverage=YES | tee xcodebuild.log | xcpretty -r html
   - ./publish-gh-pages.sh
+after_success:
+  - cd $TRAVIS_BUILD_DIR && slather
   
