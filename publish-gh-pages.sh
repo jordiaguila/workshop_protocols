@@ -4,7 +4,10 @@ SOURCE_BRANCH="master"
 TARGET_BRANCH="gh-pages"
 #This function needs to do some stuff and store all the artifacts in the out directory
 function doStuff {
-    #stuff to do
+	#generate documentation
+    jazzy --clean --author Jordi Aguila --github_url https://github.com/jordiaguila/workshop_protocols --xcodebuild-arguments -project,./workshop_protocols.xcodeproj,-scheme,workshop_protocols --module workshop_protocols --output out/docs
+    #move result of xcpretty to out directory
+    mv build out
 }
 # Pull requests and commits to other branches shouldn't try to deploy, just build to verify
 if [ "$TRAVIS_PULL_REQUEST" != "false" -o "$TRAVIS_BRANCH" != "$SOURCE_BRANCH" ]; then
@@ -53,4 +56,4 @@ git add .
 git commit -m "Deploy to GitHub Pages: ${SHA}"
  
 # Now that we're all set up, we can push.
-git push $SSH_REPO $TARGET_BRANCH
+git push https://jordiaguila:$GITHUB_OAUTH_TOKEN@github.com/jordiaguila/workshop_protocols.git $TARGET_BRANCH
